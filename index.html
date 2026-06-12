@@ -9,7 +9,9 @@
   /* estilos exclusivos del home */
   .hero {
     background: var(--off);
-    padding: clamp(3.5rem, 9vw, 7rem) 0;
+    min-height: 92vh;
+    display: flex; align-items: center;
+    padding: 4rem 0;
     position: relative; overflow: hidden;
   }
   .hero::before {
@@ -17,12 +19,12 @@
     background: radial-gradient(ellipse 80% 60% at 70% 50%, var(--blush) 0%, transparent 65%);
     pointer-events: none;
   }
-  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-  .hero-text { position: relative; z-index: 1; }
-  .hero h1 { font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 300; letter-spacing: -0.01em; margin-bottom: 1.4rem; }
+  .hero-grid { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .hero-text { position: relative; z-index: 1; max-width: 760px; }
+  .hero h1 { font-size: clamp(3.2rem, 7vw, 6.5rem); font-weight: 300; letter-spacing: -0.01em; margin-bottom: 1.6rem; }
   .hero h1 em { color: var(--rose); font-style: italic; }
-  .hero p.lead { font-size: 1.05rem; color: var(--mid); max-width: 44ch; line-height: 1.8; margin-bottom: 2.2rem; }
-  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .hero p.lead { font-size: 1.1rem; color: var(--mid); max-width: 52ch; line-height: 1.8; margin: 0 auto 2.4rem; }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
   .hero-visual { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 1rem; height: 420px; }
   .hero-img { border-radius: 18px; overflow: hidden; }
   .hero-img:first-child { grid-row: span 2; border-radius: 22px; }
@@ -164,7 +166,7 @@
   <section class="hero" id="inicio">
     <div class="wrap hero-grid">
       <div class="hero-text">
-        <span class="tag">Pastelería artesanal · desde 2014</span>
+        <span class="tag">Pastelería artesanal</span>
         <h1>Cada celebración merece algo <em>extraordinario.</em></h1>
         <p class="lead">Horneamos con los mejores ingredientes para que cada bocado sea un recuerdo. Tortas, pasteles y dulces hechos con amor para tu momento especial.</p>
         <div class="hero-btns">
@@ -172,47 +174,11 @@
           <a href="#encargo" class="btn btn-outline">Hacer un pedido</a>
         </div>
       </div>
-      <div class="hero-visual" aria-hidden="true">
-        <div class="hero-img hi-1">
-          <div class="hero-img-inner"><span class="emoji">🎂</span>Tortas</div>
-        </div>
-        <div class="hero-img hi-2">
-          <div class="hero-img-inner"><span class="emoji">🧁</span>Pasteles</div>
-        </div>
-        <div class="hero-img hi-3">
-          <div class="hero-img-inner"><span class="emoji">🍫</span>Dulces</div>
-        </div>
-      </div>
     </div>
   </section>
 
   <!-- FEATURES -->
-  <div class="features-bg">
-    <div class="wrap">
-      <div class="features-grid">
-        <div class="feat reveal">
-          <span class="feat-icon">🌾</span>
-          <h4>Ingredientes naturales</h4>
-          <p>Sin colorantes artificiales ni conservantes. Todo fresco y de temporada.</p>
-        </div>
-        <div class="feat reveal">
-          <span class="feat-icon">✍️</span>
-          <h4>100% personalizable</h4>
-          <p>Colores, mensajes, sabores y diseños adaptados a tu celebración.</p>
-        </div>
-        <div class="feat reveal">
-          <span class="feat-icon">🚚</span>
-          <h4>Despacho a domicilio</h4>
-          <p>Llegamos a tu puerta. Fría, firme y lista para la fiesta.</p>
-        </div>
-        <div class="feat reveal">
-          <span class="feat-icon">🏆</span>
-          <h4>Más de 10 años</h4>
-          <p>Cientos de celebraciones endulzadas desde el 2014 en Santiago.</p>
-        </div>
-      </div>
-    </div>
-  </div>
+
 
   <!-- CATEGORÍAS -->
   <section>
@@ -225,35 +191,31 @@
       </div>
       <div class="cat-grid">
         <a href="tortas.html" class="cat-card cc-torta reveal">
-          <div class="cat-card-bg"></div>
+          <div class="cat-card-bg" style="background-image:url('https://annaspasteleria.com/images/_imageBlock/DSC_3586web.jpg');background-size:cover;background-position:center;"></div>
           <div class="cat-card-body">
-            <span class="emoji">🎂</span>
             <h3>Tortas</h3>
-            <span>6 opciones disponibles →</span>
+            <span>Ver productos →</span>
           </div>
         </a>
         <a href="pasteles.html" class="cat-card cc-pastel reveal">
-          <div class="cat-card-bg"></div>
+          <div class="cat-card-bg" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGqhUmteV_feHQQ5ahrJAaDTNBvnR8N7M_ag&s');background-size:cover;background-position:center;"></div>
           <div class="cat-card-body">
-            <span class="emoji">🧁</span>
             <h3>Pasteles</h3>
-            <span>6 opciones disponibles →</span>
+            <span>Ver productos →</span>
           </div>
         </a>
         <a href="dulces.html" class="cat-card cc-dulce reveal">
-          <div class="cat-card-bg"></div>
+          <div class="cat-card-bg" style="background-image:url('https://eboca.cl/wp-content/uploads/2023/09/MIF_4481.jpg');background-size:cover;background-position:center;"></div>
           <div class="cat-card-body">
-            <span class="emoji">🍫</span>
             <h3>Dulces</h3>
-            <span>6 opciones disponibles →</span>
+            <span>Ver productos →</span>
           </div>
         </a>
         <a href="salados.html" class="cat-card cc-salado reveal">
-          <div class="cat-card-bg"></div>
+          <div class="cat-card-bg" style="background-image:url('https://cocinachilena.cl/wp-content/uploads/2012/10/sopaipillas-chilenas-8-scaled.jpg');background-size:cover;background-position:center;"></div>
           <div class="cat-card-body">
-            <span class="emoji">🥐</span>
             <h3>Salados</h3>
-            <span>6 opciones disponibles →</span>
+            <span>Ver productos →</span>
           </div>
         </a>
       </div>
@@ -337,9 +299,9 @@
             <h2>Cuéntanos qué celebras</h2>
             <div class="divider"></div>
             <p>Déjanos los datos y te escribimos para afinar los detalles. También puedes contactarnos directamente:</p>
-            <div class="contact-item"><span class="ci">✆</span> +56 9 1234 5678</div>
+            <div class="contact-item"><span class="ci">✆</span> +56 9 2806 4087</div>
             <div class="contact-item"><span class="ci">✉</span> hola@dulcesvalentino.cl</div>
-            <div class="contact-item"><span class="ci">📍</span> Av. Providencia 1234, Santiago</div>
+            <div class="contact-item"><span class="ci">📍</span> Recoleta, Santiago</div>
             <div class="contact-item"><span class="ci">🕐</span> Martes a Domingo · 10:00 – 20:00</div>
           </div>
           <form id="orderForm" novalidate>
@@ -409,7 +371,7 @@
       <div class="footer-col">
         <h5>Contacto</h5>
         <ul>
-          <li><a href="tel:+56912345678">+56 9 1234 5678</a></li>
+          <li><a href="tel:+56912345678">+56 9 2806 4087</a></li>
           <li><a href="mailto:hola@dulcesvalentino.cl">hola@dulcesvalentino.cl</a></li>
           <li>Providencia, Santiago</li>
           <li>Mar – Dom · 10:00–20:00</li>
