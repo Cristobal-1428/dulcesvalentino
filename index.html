@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dulces Valentino · Pastelería Artesanal</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  /* estilos exclusivos del home */
+  .hero {
+    background: var(--off);
+    padding: clamp(3.5rem, 9vw, 7rem) 0;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 70% 50%, var(--blush) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .hero-text { position: relative; z-index: 1; }
+  .hero h1 { font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 300; letter-spacing: -0.01em; margin-bottom: 1.4rem; }
+  .hero h1 em { color: var(--rose); font-style: italic; }
+  .hero p.lead { font-size: 1.05rem; color: var(--mid); max-width: 44ch; line-height: 1.8; margin-bottom: 2.2rem; }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .hero-visual { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 1rem; height: 420px; }
+  .hero-img { border-radius: 18px; overflow: hidden; }
+  .hero-img:first-child { grid-row: span 2; border-radius: 22px; }
+  .hero-img-inner {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    color: rgba(255,255,255,0.9); flex-direction: column; gap: 0.3rem; text-align: center;
+  }
+  .hero-img-inner .emoji { font-size: 2.4rem; display: block; margin-bottom: 0.3rem; }
+  .hi-1 { background: linear-gradient(150deg, #C47A8A, #7A3F50); }
+  .hi-2 { background: linear-gradient(150deg, #D4B896, #B89165); }
+  .hi-3 { background: linear-gradient(150deg, #EAD5CF, #C47A8A); }
+
+  .features-bg { background: var(--off); }
+  .features-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; padding: 3rem 0; }
+  .feat { text-align: center; padding: 2rem 1.2rem; background: var(--white); border-radius: 16px; border: 1px solid var(--nude); }
+  .feat-icon { font-size: 2.4rem; margin-bottom: 1rem; display: block; }
+  .feat h4 { font-size: 1.2rem; font-weight: 400; margin-bottom: 0.5rem; }
+  .feat p { font-size: 0.88rem; color: var(--mid); }
+
+  /* categorías home */
+  .cat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.6rem; }
+  .cat-card {
+    border-radius: 20px; overflow: hidden; position: relative;
+    height: 280px; display: flex; align-items: flex-end;
+    transition: transform 0.25s, box-shadow 0.25s;
+    text-decoration: none;
+  }
+  .cat-card:hover { transform: translateY(-6px); box-shadow: 0 28px 50px -18px rgba(42,32,32,0.3); }
+  .cat-card-bg {
+    position: absolute; inset: 0;
+    transition: transform 0.35s ease;
+  }
+  .cat-card:hover .cat-card-bg { transform: scale(1.04); }
+  .cat-card-body {
+    position: relative; z-index: 2; padding: 1.4rem;
+    background: linear-gradient(to top, rgba(42,20,20,0.75) 0%, transparent 100%);
+    width: 100%;
+  }
+  .cat-card-body .emoji { font-size: 1.8rem; display: block; margin-bottom: 0.4rem; }
+  .cat-card-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 400; color: #fff; }
+  .cat-card-body span { font-size: 0.8rem; color: rgba(255,255,255,0.75); letter-spacing: 0.06em; }
+  .cc-torta  .cat-card-bg { background: linear-gradient(135deg, #C47A8A, #7A3F50); }
+  .cc-pastel .cat-card-bg { background: linear-gradient(135deg, #D4B896, #A87855); }
+  .cc-dulce  .cat-card-bg { background: linear-gradient(135deg, #EAD5CF, #C47A8A); }
+  .cc-salado .cat-card-bg { background: linear-gradient(135deg, #A8B89A, #5A7050); }
+
+  /* proceso */
+  .process-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2.5rem; }
+  .pstep-num { font-family: 'Cormorant Garamond', serif; font-size: 4.5rem; font-weight: 300; color: var(--blush); line-height: 1; display: block; margin-bottom: 0.6rem; }
+  .pstep h3 { font-size: 1.3rem; font-weight: 400; margin-bottom: 0.5rem; }
+  .pstep p { font-size: 0.92rem; color: var(--mid); }
+  .pstep { position: relative; }
+  .pstep::after { content: ''; position: absolute; top: 2.8rem; right: -1.5rem; width: 1.8rem; height: 1px; background: var(--blush); }
+  .pstep:last-child::after { display: none; }
+
+  /* testimonios */
+  .testi-bg { background: var(--nude); }
+  .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.8rem; }
+  .testi { background: var(--white); border-radius: 16px; padding: 1.8rem; border: 1px solid var(--blush); }
+  .stars { color: var(--gold); letter-spacing: 2px; font-size: 0.95rem; margin-bottom: 0.8rem; }
+  .testi p { font-size: 0.95rem; color: var(--mid); font-style: italic; line-height: 1.7; }
+  .testi-author { margin-top: 1.1rem; font-size: 0.85rem; font-weight: 600; color: var(--charcoal); }
+
+  /* order */
+  .order-wrap { background: linear-gradient(135deg, var(--mauve) 0%, #4A2535 100%); border-radius: 24px; padding: clamp(2.5rem, 6vw, 5rem); color: #fff; }
+  .order-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .order-wrap h2 { font-size: clamp(2rem, 4vw, 3rem); color: #fff; font-weight: 300; }
+  .order-wrap p { color: rgba(255,255,255,0.75); margin: 1rem 0 1.8rem; }
+  .contact-item { display: flex; gap: 0.75rem; align-items: center; margin: 0.6rem 0; font-size: 0.97rem; }
+  .contact-item .ci { color: var(--gold-l); font-size: 1.1rem; }
+  form { display: grid; gap: 1rem; }
+  .field { display: grid; gap: 0.35rem; }
+  .field label { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.65); }
+  .field input, .field select, .field textarea {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px; padding: 0.8rem 1rem;
+    color: #fff; font-family: 'Jost', sans-serif; font-size: 0.95rem;
+    outline: none; transition: border-color 0.2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold-l); }
+  .field select option { color: var(--charcoal); background: var(--white); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-note { font-size: 0.82rem; color: rgba(255,255,255,0.5); }
+
+  .section-head { text-align: center; max-width: 56ch; margin: 0 auto 3rem; }
+  .section-head h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; }
+  .section-head p { color: var(--mid); font-size: 1rem; margin-top: 0.8rem; }
+
+  .banner-mid { background: var(--mauve); color: #fff; text-align: center; padding: clamp(3rem,7vw,5.5rem) 0; }
+  .banner-mid h2 { font-size: clamp(2.2rem,5vw,3.8rem); font-weight: 300; color: #fff; letter-spacing: 0.02em; margin-bottom: 1.1rem; }
+  .banner-mid h2 em { color: var(--gold-l); }
+  .banner-mid p { color: rgba(255,255,255,0.78); font-size: 1.05rem; max-width: 50ch; margin: 0 auto 2rem; }
+
+  @media (max-width: 880px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-visual { order: -1; height: 260px; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr; }
+    .hero-img:first-child { grid-row: span 1; }
+    .features-grid { grid-template-columns: 1fr 1fr; }
+    .cat-grid { grid-template-columns: 1fr 1fr; }
+    .process-grid { grid-template-columns: 1fr; }
+    .testi-grid { grid-template-columns: 1fr; }
+    .order-grid { grid-template-columns: 1fr; }
+    .pstep::after { display: none; }
+  }
+  @media (max-width: 560px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .cat-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">✦ Pedidos con 48 hrs de anticipación · Despacho a domicilio disponible ✦</div>
+
+<header>
+  <div class="wrap header-inner">
+    <a href="index.html" class="brand">Dulces <span>Valentino</span></a>
+    <ul class="nav-main" id="navMenu">
+      <li><a href="index.html" class="active">Inicio</a></li>
+      <li><a href="tortas.html">Tortas</a></li>
+      <li><a href="pasteles.html">Pasteles</a></li>
+      <li><a href="dulces.html">Dulces</a></li>
+      <li><a href="salados.html">Salados</a></li>
+      <li><a href="#encargo">Contacto</a></li>
+    </ul>
+    <div class="header-cta">
+      <a href="#encargo" class="btn btn-fill">Hacer un pedido</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="wrap hero-grid">
+      <div class="hero-text">
+        <span class="tag">Pastelería artesanal · desde 2014</span>
+        <h1>Cada celebración merece algo <em>extraordinario.</em></h1>
+        <p class="lead">Horneamos con los mejores ingredientes para que cada bocado sea un recuerdo. Tortas, pasteles y dulces hechos con amor para tu momento especial.</p>
+        <div class="hero-btns">
+          <a href="tortas.html" class="btn btn-fill">Ver el catálogo</a>
+          <a href="#encargo" class="btn btn-outline">Hacer un pedido</a>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-img hi-1">
+          <div class="hero-img-inner"><span class="emoji">🎂</span>Tortas</div>
+        </div>
+        <div class="hero-img hi-2">
+          <div class="hero-img-inner"><span class="emoji">🧁</span>Pasteles</div>
+        </div>
+        <div class="hero-img hi-3">
+          <div class="hero-img-inner"><span class="emoji">🍫</span>Dulces</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <div class="features-bg">
+    <div class="wrap">
+      <div class="features-grid">
+        <div class="feat reveal">
+          <span class="feat-icon">🌾</span>
+          <h4>Ingredientes naturales</h4>
+          <p>Sin colorantes artificiales ni conservantes. Todo fresco y de temporada.</p>
+        </div>
+        <div class="feat reveal">
+          <span class="feat-icon">✍️</span>
+          <h4>100% personalizable</h4>
+          <p>Colores, mensajes, sabores y diseños adaptados a tu celebración.</p>
+        </div>
+        <div class="feat reveal">
+          <span class="feat-icon">🚚</span>
+          <h4>Despacho a domicilio</h4>
+          <p>Llegamos a tu puerta. Fría, firme y lista para la fiesta.</p>
+        </div>
+        <div class="feat reveal">
+          <span class="feat-icon">🏆</span>
+          <h4>Más de 10 años</h4>
+          <p>Cientos de celebraciones endulzadas desde el 2014 en Santiago.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORÍAS -->
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="tag">Nuestros productos</span>
+        <h2>¿Qué estás buscando?</h2>
+        <div class="divider center"></div>
+        <p>Explora cada categoría y encuentra lo que necesitas para tu próxima celebración.</p>
+      </div>
+      <div class="cat-grid">
+        <a href="tortas.html" class="cat-card cc-torta reveal">
+          <div class="cat-card-bg"></div>
+          <div class="cat-card-body">
+            <span class="emoji">🎂</span>
+            <h3>Tortas</h3>
+            <span>6 opciones disponibles →</span>
+          </div>
+        </a>
+        <a href="pasteles.html" class="cat-card cc-pastel reveal">
+          <div class="cat-card-bg"></div>
+          <div class="cat-card-body">
+            <span class="emoji">🧁</span>
+            <h3>Pasteles</h3>
+            <span>6 opciones disponibles →</span>
+          </div>
+        </a>
+        <a href="dulces.html" class="cat-card cc-dulce reveal">
+          <div class="cat-card-bg"></div>
+          <div class="cat-card-body">
+            <span class="emoji">🍫</span>
+            <h3>Dulces</h3>
+            <span>6 opciones disponibles →</span>
+          </div>
+        </a>
+        <a href="salados.html" class="cat-card cc-salado reveal">
+          <div class="cat-card-bg"></div>
+          <div class="cat-card-body">
+            <span class="emoji">🥐</span>
+            <h3>Salados</h3>
+            <span>6 opciones disponibles →</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BANNER -->
+  <div class="banner-mid">
+    <div class="wrap">
+      <span class="tag" style="color:var(--gold-l);">Personalizamos todo</span>
+      <h2>¿Tienes una celebración <em>especial?</em></h2>
+      <p>Diseñamos tu torta o mesa dulce desde cero. Bodas, cumpleaños, bautizos, baby showers y más.</p>
+      <a href="#encargo" class="btn btn-fill" style="background:var(--gold);color:var(--charcoal);">Consultar disponibilidad</a>
+    </div>
+  </div>
+
+  <!-- PROCESO -->
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="tag">Así trabajamos</span>
+        <h2>Encargar es muy fácil</h2>
+        <div class="divider center"></div>
+        <p>Pedimos 48 horas de anticipación. Para bodas o más de 30 porciones, escríbenos con una semana.</p>
+      </div>
+      <div class="process-grid">
+        <div class="pstep reveal">
+          <span class="pstep-num">01</span>
+          <h3>Elige y cuéntanos</h3>
+          <p>Selecciona el sabor, tamaño y fecha. Dinos el mensaje o los colores de la decoración.</p>
+        </div>
+        <div class="pstep reveal">
+          <span class="pstep-num">02</span>
+          <h3>Confirmamos tu pedido</h3>
+          <p>Te respondemos el mismo día con el detalle y el precio final. Reservas con el 50% y queda listo.</p>
+        </div>
+        <div class="pstep reveal">
+          <span class="pstep-num">03</span>
+          <h3>Retira o te lo enviamos</h3>
+          <p>Pasa por el local o pide despacho. Llega fría, firme y lista para soplar las velas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section class="testi-bg">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="tag">Lo que dicen de nosotros</span>
+        <h2>Clientes que ya celebraron</h2>
+        <div class="divider center"></div>
+      </div>
+      <div class="testi-grid">
+        <div class="testi reveal">
+          <div class="stars">★★★★★</div>
+          <p>"La torta de frutilla para el cumpleaños de mi hija quedó hermosa y deliciosa. Llegó perfecta a tiempo. 100% recomendados."</p>
+          <div class="testi-author">— Carolina M., Las Condes</div>
+        </div>
+        <div class="testi reveal">
+          <div class="stars">★★★★★</div>
+          <p>"Encargué los macarons y los alfajores para mi matrimonio y todos los invitados me preguntaron dónde los había comprado. Increíbles."</p>
+          <div class="testi-author">— Valentina R., Providencia</div>
+        </div>
+        <div class="testi reveal">
+          <div class="stars">★★★★★</div>
+          <p>"La torta de chocolate intenso es lo mejor que he probado. Ya es la tercera vez que encargo y jamás me han fallado."</p>
+          <div class="testi-author">— Rodrigo F., Ñuñoa</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENCARGO / CONTACTO -->
+  <section id="encargo">
+    <div class="wrap">
+      <div class="order-wrap reveal">
+        <div class="order-grid">
+          <div>
+            <span class="tag" style="color:var(--gold-l);">Hagamos tu pedido</span>
+            <h2>Cuéntanos qué celebras</h2>
+            <div class="divider"></div>
+            <p>Déjanos los datos y te escribimos para afinar los detalles. También puedes contactarnos directamente:</p>
+            <div class="contact-item"><span class="ci">✆</span> +56 9 1234 5678</div>
+            <div class="contact-item"><span class="ci">✉</span> hola@dulcesvalentino.cl</div>
+            <div class="contact-item"><span class="ci">📍</span> Av. Providencia 1234, Santiago</div>
+            <div class="contact-item"><span class="ci">🕐</span> Martes a Domingo · 10:00 – 20:00</div>
+          </div>
+          <form id="orderForm" novalidate>
+            <div class="form-row">
+              <div class="field">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required />
+              </div>
+              <div class="field">
+                <label for="telefono">Teléfono</label>
+                <input type="tel" id="telefono" name="telefono" placeholder="+56 9 XXXX XXXX" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="categoria">Categoría</label>
+              <select id="categoria" name="categoria">
+                <option value="">Selecciona una categoría</option>
+                <option>Tortas</option>
+                <option>Pasteles</option>
+                <option>Dulces</option>
+                <option>Salados</option>
+                <option>Mesa dulce completa</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="fecha">Fecha que lo necesitas</label>
+              <input type="date" id="fecha" name="fecha" required />
+            </div>
+            <div class="field">
+              <label for="mensaje">Detalles del pedido</label>
+              <textarea id="mensaje" name="mensaje" rows="3" placeholder="Ej: 12 porciones, mensaje 'Feliz cumple Sofía', tonos rosados…"></textarea>
+            </div>
+            <button type="submit" class="btn btn-fill" style="justify-self:start;margin-top:0.4rem;">Enviar pedido</button>
+            <p class="form-note" id="formNote">Te respondemos el mismo día hábil.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="brand">Dulces <span>Valentino</span></a>
+        <p>Pastelería artesanal en Santiago. Tortas, pasteles, dulces y salados hechos con los mejores ingredientes y mucho amor.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Productos</h5>
+        <ul>
+          <li><a href="tortas.html">Tortas</a></li>
+          <li><a href="pasteles.html">Pasteles</a></li>
+          <li><a href="dulces.html">Dulces</a></li>
+          <li><a href="salados.html">Salados</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Información</h5>
+        <ul>
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#encargo">Cómo encargar</a></li>
+          <li><a href="#encargo">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contacto</h5>
+        <ul>
+          <li><a href="tel:+56912345678">+56 9 1234 5678</a></li>
+          <li><a href="mailto:hola@dulcesvalentino.cl">hola@dulcesvalentino.cl</a></li>
+          <li>Providencia, Santiago</li>
+          <li>Mar – Dom · 10:00–20:00</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Dulces Valentino · Hecho con harina, mantequilla y cariño.</span>
+      <span>Santiago, Chile</span>
+    </div>
+  </div>
+</footer>
+
+<script src="nav.js"></script>
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  const form = document.getElementById('orderForm');
+  const note = document.getElementById('formNote');
+  form.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const nombre = document.getElementById('nombre').value.trim();
+    if (!nombre) { note.textContent = 'Por favor escribe tu nombre para continuar.'; return; }
+    note.textContent = '¡Gracias, ' + nombre + '! Recibimos tu pedido y te escribimos pronto. 🎂';
+    note.style.color = 'var(--gold-l)';
+    form.reset();
+  });
+</script>
+</body>
+</html>

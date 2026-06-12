@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Salados · Dulces Valentino</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="topbar">✦ Pedidos con 48 hrs de anticipación · Despacho a domicilio disponible ✦</div>
+
+<header>
+  <div class="wrap header-inner">
+    <a href="index.html" class="brand">Dulces <span>Valentino</span></a>
+    <ul class="nav-main" id="navMenu">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="tortas.html">Tortas</a></li>
+      <li><a href="pasteles.html">Pasteles</a></li>
+      <li><a href="dulces.html">Dulces</a></li>
+      <li><a href="salados.html" class="active">Salados</a></li>
+      <li><a href="index.html#encargo">Contacto</a></li>
+    </ul>
+    <div class="header-cta">
+      <a href="index.html#encargo" class="btn btn-fill">Hacer un pedido</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="page-hero bg-salado">
+  <div class="wrap">
+    <span class="tag">Pastelería artesanal</span>
+    <h1>Nuestros <em>Salados</em></h1>
+    <p>Quiches, croissants, empanadas, panes y más. La opción perfecta para el desayuno, coffee break o eventos.</p>
+  </div>
+</div>
+
+<main>
+  <section>
+    <div class="wrap">
+      <div class="prod-grid">
+
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-banner">
+    <div class="wrap">
+      <span class="tag" style="color:var(--gold-l);">Eventos y reuniones</span>
+      <h2>Armamos tu <em>coffee break</em></h2>
+      <p>Bandejas de salados, panes y acompañamientos para reuniones, desayunos de empresa y celebraciones.</p>
+      <a href="index.html#encargo" class="btn btn-fill" style="background:var(--gold);color:var(--charcoal);">Consultar disponibilidad</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="brand">Dulces <span>Valentino</span></a>
+        <p>Pastelería artesanal en Santiago. Tortas, pasteles, dulces y salados hechos con los mejores ingredientes.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Productos</h5>
+        <ul>
+          <li><a href="tortas.html">Tortas</a></li>
+          <li><a href="pasteles.html">Pasteles</a></li>
+          <li><a href="dulces.html">Dulces</a></li>
+          <li><a href="salados.html">Salados</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Información</h5>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="index.html#encargo">Cómo encargar</a></li>
+          <li><a href="index.html#encargo">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contacto</h5>
+        <ul>
+          <li><a href="tel:+56912345678">+56 9 1234 5678</a></li>
+          <li><a href="mailto:hola@dulcesvalentino.cl">hola@dulcesvalentino.cl</a></li>
+          <li>Providencia, Santiago</li>
+          <li>Mar – Dom · 10:00–20:00</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Dulces Valentino · Hecho con harina, mantequilla y cariño.</span>
+      <span>Santiago, Chile</span>
+    </div>
+  </div>
+</footer>
+
+<script src="nav.js"></script>
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
