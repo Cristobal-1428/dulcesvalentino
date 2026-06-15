@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin · Dulces Valentino</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --rose:    #5BA3CC;
+  --rose-d:  #3B83AB;
+  --mauve:   #1A5F8A;
+  --cream:   #F5F9FC;
+  --nude:    #E4EEF5;
+  --blush:   #BDD9EE;
+  --charcoal:#102030;
+  --mid:     #3A6080;
+  --gold:    #B89165;
+  --white:   #FFFFFF;
+  --danger:  #c0392b;
+  --success: #27ae60;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Jost',sans-serif;background:#EDF4FA;color:var(--charcoal);min-height:100vh;-webkit-font-smoothing:antialiased;}
+h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;}
+input,select,textarea,button{font-family:'Jost',sans-serif;}
+
+/* ── LOGIN ── */
+#loginScreen{
+  position:fixed;inset:0;background:linear-gradient(135deg,var(--mauve),#3A1A28);
+  display:flex;align-items:center;justify-content:center;z-index:9999;
+}
+.login-box{
+  background:#fff;border-radius:20px;padding:2.5rem 2rem;width:min(360px,92vw);
+  text-align:center;box-shadow:0 24px 60px rgba(0,0,0,0.3);
+}
+.login-box h1{font-size:1.8rem;color:var(--mauve);margin-bottom:0.3rem;}
+.login-box p{color:var(--mid);font-size:0.9rem;margin-bottom:1.8rem;}
+.login-box input{
+  width:100%;padding:0.8rem 1rem;border:1.5px solid var(--nude);
+  border-radius:10px;font-size:1rem;margin-bottom:1rem;outline:none;
+  transition:border-color 0.2s;
+}
+.login-box input:focus{border-color:var(--rose);}
+.login-box button{
+  width:100%;padding:0.85rem;background:var(--rose);color:#fff;border:none;
+  border-radius:100px;font-size:0.9rem;font-weight:600;letter-spacing:0.06em;
+  text-transform:uppercase;cursor:pointer;transition:background 0.2s;
+}
+.login-box button:hover{background:var(--rose-d);}
+.login-error{color:var(--danger);font-size:0.85rem;margin-top:0.5rem;display:none;}
+
+/* ── LAYOUT ── */
+#app{display:none;}
+.admin-bar{
+  background:var(--mauve);color:#fff;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0.9rem 1.5rem;position:sticky;top:0;z-index:100;
+}
+.admin-bar h2{font-size:1.3rem;font-weight:400;color:#fff;letter-spacing:0.02em;}
+.admin-bar h2 span{font-style:italic;color:#D4B896;}
+.bar-actions{display:flex;gap:0.7rem;align-items:center;}
+.bar-btn{
+  background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);
+  color:#fff;border-radius:100px;padding:0.45rem 1rem;font-size:0.8rem;
+  font-weight:500;cursor:pointer;transition:background 0.2s;
+}
+.bar-btn:hover{background:rgba(255,255,255,0.28);}
+.bar-btn.danger{background:rgba(192,57,43,0.4);border-color:rgba(192,57,43,0.6);}
+.bar-btn.danger:hover{background:rgba(192,57,43,0.7);}
+
+.admin-body{padding:1.5rem;max-width:1200px;margin:0 auto;}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.8rem;}
+.stat-card{background:#fff;border-radius:14px;padding:1.2rem 1.4rem;border:1px solid var(--nude);}
+.stat-card .num{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:600;color:var(--mauve);}
+.stat-card .lbl{font-size:0.82rem;color:var(--mid);margin-top:0.2rem;}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;gap:0.8rem;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;}
+.cat-tabs{display:flex;gap:0.4rem;flex-wrap:wrap;flex:1;}
+.cat-tab{
+  padding:0.45rem 1.1rem;border-radius:100px;border:1.5px solid var(--blush);
+  background:transparent;font-size:0.83rem;font-weight:500;cursor:pointer;
+  transition:all 0.18s;color:var(--mid);
+}
+.cat-tab.active{background:var(--rose);border-color:var(--rose);color:#fff;}
+.add-btn{
+  background:var(--rose);color:#fff;border:none;border-radius:100px;
+  padding:0.6rem 1.4rem;font-size:0.85rem;font-weight:600;
+  letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;
+  transition:background 0.2s,transform 0.15s;white-space:nowrap;
+}
+.add-btn:hover{background:var(--rose-d);transform:translateY(-1px);}
+
+/* ── PRODUCT TABLE ── */
+.prod-table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;border:1px solid var(--nude);}
+.prod-table th{
+  background:var(--cream);text-align:left;padding:0.8rem 1rem;
+  font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--mid);font-weight:600;border-bottom:1px solid var(--nude);
+}
+.prod-table td{padding:0.9rem 1rem;vertical-align:middle;border-bottom:1px solid var(--nude);font-size:0.9rem;}
+.prod-table tr:last-child td{border-bottom:none;}
+.prod-table tr:hover td{background:#FDFAF8;}
+.prod-thumb{
+  width:52px;height:52px;border-radius:10px;object-fit:cover;
+  background:var(--nude);display:block;
+}
+.prod-thumb-placeholder{
+  width:52px;height:52px;border-radius:10px;
+  background:linear-gradient(135deg,var(--blush),var(--rose));
+  display:flex;align-items:center;justify-content:center;font-size:1.4rem;
+}
+.badge{
+  display:inline-block;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;
+  font-weight:600;padding:0.2rem 0.6rem;border-radius:100px;
+  background:var(--blush);color:var(--mauve);
+}
+.cat-badge{
+  display:inline-block;font-size:0.72rem;padding:0.2rem 0.7rem;border-radius:100px;
+  font-weight:500;
+}
+.cat-badge.tortas  {background:#F5E0E5;color:#7A3F50;}
+.cat-badge.pasteles{background:#F5EAD8;color:#7A5030;}
+.cat-badge.dulces  {background:#F5E0E5;color:#7A3F50;}
+.cat-badge.salados {background:#E5EFE0;color:#3A5030;}
+.action-btn{
+  background:none;border:1.5px solid var(--nude);border-radius:8px;
+  padding:0.35rem 0.7rem;cursor:pointer;font-size:0.8rem;font-weight:500;
+  transition:all 0.15s;
+}
+.action-btn.edit{color:var(--mauve);border-color:var(--blush);}
+.action-btn.edit:hover{background:var(--blush);}
+.action-btn.del{color:var(--danger);border-color:#fadbd8;}
+.action-btn.del:hover{background:#fadbd8;}
+.empty-row td{text-align:center;color:var(--mid);padding:3rem;}
+
+/* ── DRAWER (Add/Edit form) ── */
+.drawer-overlay{
+  display:none;position:fixed;inset:0;background:rgba(42,32,32,0.4);
+  z-index:400;backdrop-filter:blur(2px);
+}
+.drawer-overlay.open{display:block;}
+.drawer{
+  position:fixed;top:0;right:-100%;width:min(520px,100vw);height:100vh;
+  background:#fff;z-index:401;overflow-y:auto;
+  transition:right 0.32s cubic-bezier(0.4,0,0.2,1);
+  display:flex;flex-direction:column;
+}
+.drawer.open{right:0;}
+.drawer-head{
+  padding:1.4rem 1.5rem;border-bottom:1px solid var(--nude);
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--cream);position:sticky;top:0;z-index:1;
+}
+.drawer-head h3{font-size:1.4rem;color:var(--mauve);}
+.close-btn{background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--mid);padding:0.2rem;}
+.drawer-body{padding:1.5rem;flex:1;}
+.drawer-foot{
+  padding:1.2rem 1.5rem;border-top:1px solid var(--nude);
+  display:flex;gap:0.8rem;background:#fff;position:sticky;bottom:0;
+}
+.save-btn{
+  flex:1;background:var(--rose);color:#fff;border:none;border-radius:100px;
+  padding:0.8rem;font-size:0.9rem;font-weight:600;cursor:pointer;transition:background 0.2s;
+}
+.save-btn:hover{background:var(--rose-d);}
+.cancel-btn{
+  background:transparent;color:var(--mid);border:1.5px solid var(--nude);
+  border-radius:100px;padding:0.8rem 1.4rem;font-size:0.9rem;cursor:pointer;transition:all 0.2s;
+}
+.cancel-btn:hover{background:var(--nude);}
+
+/* ── FORM ── */
+.form-group{margin-bottom:1.2rem;}
+.form-group label{display:block;font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--mid);margin-bottom:0.4rem;font-weight:500;}
+.form-group input[type=text],
+.form-group input[type=number],
+.form-group select,
+.form-group textarea{
+  width:100%;padding:0.75rem 0.9rem;border:1.5px solid var(--nude);
+  border-radius:10px;font-size:0.95rem;color:var(--charcoal);
+  outline:none;transition:border-color 0.2s;background:#fff;
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--rose);}
+.form-group textarea{resize:vertical;min-height:80px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+
+/* imagen */
+.img-preview{
+  width:100%;height:160px;border-radius:12px;border:2px dashed var(--blush);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;background:var(--cream);cursor:pointer;position:relative;
+  transition:border-color 0.2s;
+}
+.img-preview:hover{border-color:var(--rose);}
+.img-preview img{width:100%;height:100%;object-fit:cover;}
+.img-preview .img-placeholder{text-align:center;color:var(--mid);}
+.img-placeholder .icon{font-size:2rem;margin-bottom:0.4rem;display:block;}
+.img-placeholder p{font-size:0.82rem;}
+#imgFileInput{display:none;}
+.img-opts{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:0.6rem;}
+.img-opt-btn{
+  background:var(--cream);border:1.5px solid var(--nude);border-radius:8px;
+  padding:0.5rem;font-size:0.8rem;cursor:pointer;color:var(--mid);
+  transition:all 0.15s;text-align:center;
+}
+.img-opt-btn:hover{border-color:var(--rose);color:var(--rose);}
+
+/* precios dinámicos */
+.precio-section{background:var(--cream);border-radius:12px;padding:1.2rem;margin-top:0.4rem;}
+.precio-section h4{font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--mid);margin-bottom:1rem;font-weight:600;}
+
+/* tortas checkboxes */
+.size-check-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;}
+.size-check-item{display:flex;align-items:center;gap:0.6rem;background:#fff;border-radius:8px;padding:0.6rem 0.8rem;border:1.5px solid var(--nude);}
+.size-check-item input[type=checkbox]{width:16px;height:16px;accent-color:var(--rose);flex-shrink:0;}
+.size-check-item label{font-size:0.88rem;flex:1;cursor:pointer;}
+.size-price-input{width:90px;padding:0.35rem 0.5rem;border:1.5px solid var(--blush);border-radius:6px;font-size:0.85rem;display:none;}
+.size-check-item input[type=checkbox]:checked ~ .size-price-input{display:block;}
+
+/* dulces packs */
+.dulce-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.6rem;}
+.dulce-row label{font-size:0.88rem;min-width:100px;}
+.dulce-row input[type=number]{flex:1;padding:0.5rem 0.7rem;border:1.5px solid var(--blush);border-radius:8px;font-size:0.9rem;}
+.dulce-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--rose);}
+.pack-enabled input[type=number]{display:none;}
+.pack-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.6rem;}
+.pack-row input[type=checkbox]:checked ~ input[type=number]{display:block;}
+.pack-row input[type=number]{display:none;flex:1;padding:0.5rem 0.7rem;border:1.5px solid var(--blush);border-radius:8px;font-size:0.9rem;}
+.pack-row label{font-size:0.88rem;min-width:90px;}
+
+/* filas dinámicas (pasteles/salados) */
+.price-row{display:flex;gap:0.5rem;margin-bottom:0.5rem;align-items:center;}
+.price-row input[type=text]{flex:1.2;padding:0.5rem 0.7rem;border:1.5px solid var(--blush);border-radius:8px;font-size:0.88rem;}
+.price-row input[type=number]{flex:1;padding:0.5rem 0.7rem;border:1.5px solid var(--blush);border-radius:8px;font-size:0.88rem;}
+.price-row .rm-row{background:none;border:1.5px solid #fadbd8;border-radius:6px;padding:0.4rem 0.6rem;cursor:pointer;color:var(--danger);font-size:0.9rem;}
+.add-row-btn{
+  background:none;border:1.5px dashed var(--blush);border-radius:8px;
+  padding:0.5rem 1rem;width:100%;font-size:0.83rem;color:var(--mid);
+  cursor:pointer;margin-top:0.4rem;transition:all 0.15s;
+}
+.add-row-btn:hover{border-color:var(--rose);color:var(--rose);}
+
+/* modal cambio contraseña */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(42,32,32,0.5);z-index:500;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#fff;border-radius:16px;padding:2rem;width:min(360px,92vw);}
+.modal-box h3{font-size:1.3rem;color:var(--mauve);margin-bottom:1.2rem;}
+.modal-box input{width:100%;padding:0.75rem 0.9rem;border:1.5px solid var(--nude);border-radius:10px;font-size:0.95rem;margin-bottom:0.8rem;outline:none;}
+.modal-box input:focus{border-color:var(--rose);}
+.modal-actions{display:flex;gap:0.7rem;margin-top:0.5rem;}
+.modal-save{flex:1;background:var(--rose);color:#fff;border:none;border-radius:100px;padding:0.7rem;font-weight:600;cursor:pointer;}
+.modal-cancel{background:none;border:1.5px solid var(--nude);border-radius:100px;padding:0.7rem 1.2rem;cursor:pointer;color:var(--mid);}
+.msg-toast{
+  position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--charcoal);color:#fff;padding:0.75rem 1.5rem;border-radius:100px;
+  font-size:0.88rem;z-index:600;opacity:0;transition:all 0.3s;white-space:nowrap;
+}
+.msg-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@media(max-width:640px){
+  .stats{grid-template-columns:1fr 1fr;}
+  .form-row{grid-template-columns:1fr;}
+  .size-check-grid{grid-template-columns:1fr;}
+  .admin-body{padding:1rem;}
+  .prod-table thead{display:none;}
+  .prod-table tr{display:block;border-bottom:1px solid var(--nude);padding:0.8rem 1rem;}
+  .prod-table td{display:flex;justify-content:space-between;border:none;padding:0.3rem 0;font-size:0.88rem;}
+  .prod-table td::before{content:attr(data-label);font-weight:600;color:var(--mid);font-size:0.78rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>Dulces <span style="color:var(--rose);font-style:italic;">Valentino</span></h1>
+    <p>Panel de administración</p>
+    <input type="password" id="pwdInput" placeholder="Contraseña" />
+    <button onclick="doLogin()">Ingresar</button>
+    <div class="login-error" id="loginError">Contraseña incorrecta.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <!-- Barra -->
+  <div class="admin-bar">
+    <h2>Dulces <span>Valentino</span> — Admin</h2>
+    <div class="bar-actions">
+      <a href="index.html" class="bar-btn" style="text-decoration:none;">← Inicio</a>
+      <button class="bar-btn" onclick="openPwdModal()">🔑 Contraseña</button>
+      <button class="bar-btn danger" onclick="confirmReset()">↺ Restaurar</button>
+      <button class="bar-btn" onclick="doLogout()">Salir</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-card"><div class="num" id="st-total">0</div><div class="lbl">Productos totales</div></div>
+      <div class="stat-card"><div class="num" id="st-tortas">0</div><div class="lbl">Tortas</div></div>
+      <div class="stat-card"><div class="num" id="st-pasteles">0</div><div class="lbl">Pasteles</div></div>
+      <div class="stat-card"><div class="num" id="st-dulces">0</div><div class="lbl">Dulces + Salados</div></div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="cat-tabs">
+        <button class="cat-tab active" data-cat="todos" onclick="filterCat(this,'todos')">Todos</button>
+        <button class="cat-tab" data-cat="tortas"   onclick="filterCat(this,'tortas')">🎂 Tortas</button>
+        <button class="cat-tab" data-cat="pasteles" onclick="filterCat(this,'pasteles')">🧁 Pasteles</button>
+        <button class="cat-tab" data-cat="dulces"   onclick="filterCat(this,'dulces')">🍫 Dulces</button>
+        <button class="cat-tab" data-cat="salados"  onclick="filterCat(this,'salados')">🥐 Salados</button>
+      </div>
+      <button class="add-btn" onclick="openDrawer(null)">+ Agregar producto</button>
+    </div>
+
+    <!-- Tabla -->
+    <table class="prod-table">
+      <thead>
+        <tr>
+          <th style="width:70px">Foto</th>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Precio base</th>
+          <th style="width:130px">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="prodTableBody"></tbody>
+    </table>
+
+  </div>
+</div>
+
+<!-- DRAWER -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h3 id="drawerTitle">Agregar producto</h3>
+    <button class="close-btn" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body">
+
+    <!-- Imagen -->
+    <div class="form-group">
+      <label>Imagen del producto</label>
+      <div class="img-preview" id="imgPreview" onclick="document.getElementById('imgFileInput').click()">
+        <div class="img-placeholder">
+          <span class="icon">📷</span>
+          <p>Haz clic para subir una foto</p>
+        </div>
+      </div>
+      <input type="file" id="imgFileInput" accept="image/*" onchange="handleImgFile(this)"/>
+      <div class="img-opts">
+        <button class="img-opt-btn" onclick="document.getElementById('imgFileInput').click()">📁 Subir desde dispositivo</button>
+        <button class="img-opt-btn" onclick="promptImgUrl()">🔗 Pegar URL de imagen</button>
+      </div>
+      <input type="hidden" id="fImagen"/>
+    </div>
+
+    <!-- Nombre -->
+    <div class="form-group">
+      <label>Nombre del producto</label>
+      <input type="text" id="fNombre" placeholder="Ej: Pie de Limón 🍋"/>
+    </div>
+
+    <!-- Categoría + Badge -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Categoría</label>
+        <select id="fCategoria" onchange="updatePriceSection()">
+          <option value="tortas">🎂 Tortas</option>
+          <option value="pasteles">🧁 Pasteles</option>
+          <option value="dulces">🍫 Dulces</option>
+          <option value="salados">🥐 Salados</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Etiqueta (opcional)</label>
+        <input type="text" id="fBadge" placeholder="Ej: Favorito, Clásico"/>
+      </div>
+    </div>
+
+    <!-- Descripción -->
+    <div class="form-group">
+      <label>Descripción</label>
+      <textarea id="fDesc" placeholder="Describe los ingredientes y sabores..."></textarea>
+    </div>
+
+    <!-- PRECIOS DINÁMICOS -->
+    <div class="form-group">
+      <label>Tamaños y precios</label>
+      <div id="precioSection"></div>
+    </div>
+
+  </div>
+  <div class="drawer-foot">
+    <button class="cancel-btn" onclick="closeDrawer()">Cancelar</button>
+    <button class="save-btn" onclick="saveProduct()">Guardar producto</button>
+  </div>
+</div>
+
+<!-- MODAL CONTRASEÑA -->
+<div class="modal-overlay" id="pwdModal">
+  <div class="modal-box">
+    <h3>Cambiar contraseña</h3>
+    <input type="password" id="pwdCurrent" placeholder="Contraseña actual"/>
+    <input type="password" id="pwdNew" placeholder="Nueva contraseña"/>
+    <input type="password" id="pwdConfirm" placeholder="Confirmar nueva contraseña"/>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closePwdModal()">Cancelar</button>
+      <button class="modal-save" onclick="doChangePwd()">Guardar</button>
+    </div>
+    <div class="login-error" id="pwdError" style="margin-top:0.6rem;"></div>
+  </div>
+</div>
+
+<div class="msg-toast" id="toast"></div>
+
+<script src="products.js"></script>
+<script>
+var editingId = null;
+var currentCat = 'todos';
+
+// ── AUTH ──
+function doLogin() {
+  var pwd = document.getElementById('pwdInput').value;
+  if (DV.checkPwd(pwd)) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    DV.init();
+    renderTable();
+    updateStats();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+document.getElementById('pwdInput').addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
+
+function doLogout() {
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('pwdInput').value = '';
+}
+
+// ── STATS ──
+function updateStats() {
+  var p = DV.get() || [];
+  document.getElementById('st-total').textContent   = p.length;
+  document.getElementById('st-tortas').textContent  = p.filter(function(x){return x.categoria==='tortas';}).length;
+  document.getElementById('st-pasteles').textContent= p.filter(function(x){return x.categoria==='pasteles';}).length;
+  document.getElementById('st-dulces').textContent  = p.filter(function(x){return x.categoria==='dulces'||x.categoria==='salados';}).length;
+}
+
+// ── TABLE ──
+function filterCat(btn, cat) {
+  document.querySelectorAll('.cat-tab').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  currentCat = cat;
+  renderTable();
+}
+
+function renderTable() {
+  var all = DV.get() || [];
+  var list = currentCat === 'todos' ? all : all.filter(function(p){return p.categoria===currentCat;});
+  var tbody = document.getElementById('prodTableBody');
+  if (!list.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="5">No hay productos en esta categoría.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.map(function(p) {
+    var img = p.imagen
+      ? '<img class="prod-thumb" src="'+DV.esc(p.imagen)+'" onerror="this.style.display=\'none\'">'
+      : '<div class="prod-thumb-placeholder">🍰</div>';
+    var basePrice = p.precios && p.precios.length ? DV.formatPrice(p.precios[0].precio) : '—';
+    var badge = p.badge ? '<span class="badge">'+DV.esc(p.badge)+'</span> ' : '';
+    return '<tr>'+
+      '<td data-label="Foto">'+img+'</td>'+
+      '<td data-label="Nombre">'+badge+'<strong>'+DV.esc(p.nombre)+'</strong></td>'+
+      '<td data-label="Categoría"><span class="cat-badge '+p.categoria+'">'+p.categoria+'</span></td>'+
+      '<td data-label="Precio">'+basePrice+(p.precios&&p.precios.length>1?' <small style="color:var(--mid)">(+más)</small>':'')+'</td>'+
+      '<td data-label="Acciones">'+
+        '<button class="action-btn edit" onclick="openDrawer(\''+p.id+'\')">✏ Editar</button> '+
+        '<button class="action-btn del" onclick="deleteProduct(\''+p.id+'\')">🗑</button>'+
+      '</td>'+
+    '</tr>';
+  }).join('');
+}
+
+// ── DELETE ──
+function deleteProduct(id) {
+  if (!confirm('¿Eliminar este producto?')) return;
+  var list = (DV.get()||[]).filter(function(p){return p.id!==id;});
+  DV.save(list);
+  renderTable();
+  updateStats();
+  toast('Producto eliminado.');
+}
+
+// ── DRAWER ──
+function openDrawer(id) {
+  editingId = id;
+  resetForm();
+  if (id) {
+    var p = (DV.get()||[]).find(function(x){return x.id===id;});
+    if (!p) return;
+    document.getElementById('drawerTitle').textContent = 'Editar producto';
+    document.getElementById('fNombre').value    = p.nombre || '';
+    document.getElementById('fCategoria').value = p.categoria || 'pasteles';
+    document.getElementById('fBadge').value     = p.badge || '';
+    document.getElementById('fDesc').value      = p.descripcion || '';
+    document.getElementById('fImagen').value    = p.imagen || '';
+    if (p.imagen) setImgPreview(p.imagen);
+    updatePriceSection(p.precios);
+  } else {
+    document.getElementById('drawerTitle').textContent = 'Agregar producto';
+    updatePriceSection();
+  }
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+}
+
+function closeDrawer() {
+  document.getElementById('drawerOverlay').classList.remove('open');
+  document.getElementById('drawer').classList.remove('open');
+}
+
+function resetForm() {
+  document.getElementById('fNombre').value    = '';
+  document.getElementById('fCategoria').value = 'pasteles';
+  document.getElementById('fBadge').value     = '';
+  document.getElementById('fDesc').value      = '';
+  document.getElementById('fImagen').value    = '';
+  document.getElementById('imgPreview').innerHTML =
+    '<div class="img-placeholder"><span class="icon">📷</span><p>Haz clic para subir una foto</p></div>';
+}
+
+// ── PRECIO SECTION ──
+var TORTA_SIZES = ['6pp','10pp','15pp','20pp','25pp','30pp','40pp'];
+
+function updatePriceSection(existingPrecios) {
+  var cat = document.getElementById('fCategoria').value;
+  var sec = document.getElementById('precioSection');
+
+  if (cat === 'tortas') {
+    var html = '<div class="precio-section"><h4>Selecciona los tamaños disponibles</h4><div class="size-check-grid">';
+    TORTA_SIZES.forEach(function(sz) {
+      var existing = existingPrecios && existingPrecios.find(function(p){return p.label===sz;});
+      var checked  = existing ? 'checked' : '';
+      var val      = existing ? existing.precio : '';
+      html += '<div class="size-check-item">'+
+        '<input type="checkbox" id="sz_'+sz+'" '+checked+' onchange="toggleSizePrice(this)">'+
+        '<label for="sz_'+sz+'">'+sz+'</label>'+
+        '<input class="size-price-input" type="number" id="pr_'+sz+'" placeholder="$" value="'+val+'" style="'+(existing?'display:block':'')+'">'+
+        '</div>';
+    });
+    html += '</div></div>';
+    sec.innerHTML = html;
+
+  } else if (cat === 'dulces') {
+    var unitPrice = (existingPrecios && existingPrecios.find(function(p){return p.label==='c/u';}));
+    var pack5     = (existingPrecios && existingPrecios.find(function(p){return p.label==='5 por';}));
+    var pack7     = (existingPrecios && existingPrecios.find(function(p){return p.label==='7 por';}));
+    sec.innerHTML = '<div class="precio-section"><h4>Precio por unidad y packs</h4>'+
+      '<div class="dulce-row"><label>Precio c/u</label>'+
+        '<input type="number" id="dulce_cu" placeholder="150" value="'+(unitPrice?unitPrice.precio:'')+'"></div>'+
+      '<div style="font-size:0.8rem;color:var(--mid);margin:0.6rem 0 0.8rem">Opciones de pack (opcional):</div>'+
+      '<div class="pack-row">'+
+        '<input type="checkbox" id="pack5_chk" '+(pack5?'checked':'')+' onchange="togglePackInput(this,\'pack5_inp\')">'+
+        '<label for="pack5_chk">5 unidades por</label>'+
+        '<input type="number" id="pack5_inp" placeholder="$" value="'+(pack5?pack5.precio:'')+(pack5?'" style="display:block"':'"')+'>'+
+      '</div>'+
+      '<div class="pack-row">'+
+        '<input type="checkbox" id="pack7_chk" '+(pack7?'checked':'')+' onchange="togglePackInput(this,\'pack7_inp\')">'+
+        '<label for="pack7_chk">7 unidades por</label>'+
+        '<input type="number" id="pack7_inp" placeholder="$" value="'+(pack7?pack7.precio:'')+(pack7?'" style="display:block"':'"')+'>'+
+      '</div>'+
+      '<button class="add-row-btn" onclick="addPackRow()">+ Agregar otro pack</button>'+
+      '<div id="extraPacks"></div>'+
+      '</div>';
+
+  } else {
+    // pasteles / salados — filas libres
+    var html2 = '<div class="precio-section"><h4>Tamaños y precios</h4><div id="priceRows">';
+    if (existingPrecios && existingPrecios.length) {
+      existingPrecios.forEach(function(pr, i) {
+        html2 += priceRowHtml(pr.label, pr.precio, i);
+      });
+    } else {
+      html2 += priceRowHtml('', '', 0);
+    }
+    html2 += '</div><button class="add-row-btn" onclick="addPriceRow()">+ Agregar tamaño</button></div>';
+    sec.innerHTML = html2;
+  }
+}
+
+function priceRowHtml(label, precio, idx) {
+  return '<div class="price-row" id="pr_row_'+idx+'">'+
+    '<input type="text" placeholder="Ej: 22 cm" value="'+DV.esc(label)+'">'+
+    '<input type="number" placeholder="Precio" value="'+(precio||'')+'">'+
+    '<button class="rm-row" onclick="removeRow(this)">✕</button>'+
+    '</div>';
+}
+
+var rowCount = 1;
+function addPriceRow() {
+  var container = document.getElementById('priceRows');
+  var div = document.createElement('div');
+  div.className = 'price-row';
+  div.id = 'pr_row_' + (rowCount++);
+  div.innerHTML = '<input type="text" placeholder="Ej: 26 cm"><input type="number" placeholder="Precio"><button class="rm-row" onclick="removeRow(this)">✕</button>';
+  container.appendChild(div);
+}
+
+var packCount = 0;
+function addPackRow() {
+  var container = document.getElementById('extraPacks');
+  var div = document.createElement('div');
+  div.className = 'pack-row';
+  div.innerHTML =
+    '<input type="checkbox" checked onchange="togglePackInput(this,\'extra_inp_'+packCount+'\')">'+
+    '<input type="text" placeholder="Etiqueta (ej: 10 por)" style="flex:1;padding:0.5rem 0.7rem;border:1.5px solid var(--blush);border-radius:8px;font-size:0.9rem;">'+
+    '<input type="number" id="extra_inp_'+packCount+'" placeholder="$" style="display:block;flex:1;padding:0.5rem 0.7rem;border:1.5px solid var(--blush);border-radius:8px;font-size:0.9rem;">'+
+    '<button class="rm-row" onclick="removeRow(this)" style="background:none;border:1.5px solid #fadbd8;border-radius:6px;padding:0.4rem 0.6rem;cursor:pointer;color:var(--danger);">✕</button>';
+  container.appendChild(div);
+  packCount++;
+}
+
+function removeRow(btn) { btn.parentElement.remove(); }
+
+function toggleSizePrice(chk) {
+  var sz = chk.id.replace('sz_','');
+  var inp = document.getElementById('pr_'+sz);
+  inp.style.display = chk.checked ? 'block' : 'none';
+  if (!chk.checked) inp.value = '';
+}
+
+function togglePackInput(chk, inputId) {
+  var inp = document.getElementById(inputId);
+  if (inp) inp.style.display = chk.checked ? 'block' : 'none';
+}
+
+// ── COLLECT PRECIOS ──
+function collectPrecios() {
+  var cat = document.getElementById('fCategoria').value;
+  var precios = [];
+
+  if (cat === 'tortas') {
+    TORTA_SIZES.forEach(function(sz) {
+      var chk = document.getElementById('sz_'+sz);
+      var inp = document.getElementById('pr_'+sz);
+      if (chk && chk.checked && inp && inp.value) {
+        precios.push({label: sz, precio: parseInt(inp.value,10)});
+      }
+    });
+
+  } else if (cat === 'dulces') {
+    var cu = document.getElementById('dulce_cu');
+    if (cu && cu.value) precios.push({label:'c/u', precio:parseInt(cu.value,10)});
+    var p5chk = document.getElementById('pack5_chk');
+    var p5inp = document.getElementById('pack5_inp');
+    if (p5chk && p5chk.checked && p5inp && p5inp.value) precios.push({label:'5 por', precio:parseInt(p5inp.value,10)});
+    var p7chk = document.getElementById('pack7_chk');
+    var p7inp = document.getElementById('pack7_inp');
+    if (p7chk && p7chk.checked && p7inp && p7inp.value) precios.push({label:'7 por', precio:parseInt(p7inp.value,10)});
+    // extras
+    var extras = document.querySelectorAll('#extraPacks .pack-row');
+    extras.forEach(function(row) {
+      var chk2 = row.querySelector('input[type=checkbox]');
+      var lbl2 = row.querySelector('input[type=text]');
+      var pr2  = row.querySelector('input[type=number]');
+      if (chk2 && chk2.checked && lbl2 && lbl2.value && pr2 && pr2.value) {
+        precios.push({label: lbl2.value, precio: parseInt(pr2.value,10)});
+      }
+    });
+
+  } else {
+    var rows = document.querySelectorAll('#priceRows .price-row');
+    rows.forEach(function(row) {
+      var lblInp = row.querySelector('input[type=text]');
+      var prInp  = row.querySelector('input[type=number]');
+      if (lblInp && lblInp.value && prInp && prInp.value) {
+        precios.push({label: lblInp.value, precio: parseInt(prInp.value,10)});
+      }
+    });
+  }
+  return precios;
+}
+
+// ── SAVE ──
+function saveProduct() {
+  var nombre = document.getElementById('fNombre').value.trim();
+  if (!nombre) { alert('El nombre es obligatorio.'); return; }
+  var precios = collectPrecios();
+  if (!precios.length) { alert('Agrega al menos un precio.'); return; }
+
+  var producto = {
+    id:          editingId || DV.generateId(),
+    nombre:      nombre,
+    categoria:   document.getElementById('fCategoria').value,
+    badge:       document.getElementById('fBadge').value.trim(),
+    descripcion: document.getElementById('fDesc').value.trim(),
+    imagen:      document.getElementById('fImagen').value,
+    precios:     precios
+  };
+
+  var list = DV.get() || [];
+  if (editingId) {
+    list = list.map(function(p){ return p.id===editingId ? producto : p; });
+  } else {
+    list.push(producto);
+  }
+  DV.save(list);
+  closeDrawer();
+  renderTable();
+  updateStats();
+  toast(editingId ? 'Producto actualizado ✓' : 'Producto agregado ✓');
+}
+
+// ── IMAGEN ──
+function handleImgFile(input) {
+  var file = input.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) {
+    alert('La imagen es muy grande (máx 2MB). Por favor usa una URL en su lugar.');
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    // resize con canvas
+    var img = new Image();
+    img.onload = function() {
+      var MAX = 800;
+      var w = img.width, h = img.height;
+      if (w > MAX) { h = Math.round(h*MAX/w); w = MAX; }
+      var canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      var dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+      document.getElementById('fImagen').value = dataUrl;
+      setImgPreview(dataUrl);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function promptImgUrl() {
+  var url = prompt('Pega aquí la URL de la imagen:');
+  if (url && url.trim()) {
+    document.getElementById('fImagen').value = url.trim();
+    setImgPreview(url.trim());
+  }
+}
+
+function setImgPreview(src) {
+  document.getElementById('imgPreview').innerHTML = '<img src="'+DV.esc(src)+'" onerror="this.parentElement.innerHTML=\'<div class=img-placeholder><span class=icon>⚠️</span><p>No se pudo cargar</p></div>\'">';
+}
+
+// ── CONTRASEÑA ──
+function openPwdModal()  { document.getElementById('pwdModal').classList.add('open'); }
+function closePwdModal() { document.getElementById('pwdModal').classList.remove('open'); document.getElementById('pwdError').style.display='none'; }
+
+function doChangePwd() {
+  var cur = document.getElementById('pwdCurrent').value;
+  var nw  = document.getElementById('pwdNew').value;
+  var cf  = document.getElementById('pwdConfirm').value;
+  var err = document.getElementById('pwdError');
+  if (!DV.checkPwd(cur))  { err.textContent='Contraseña actual incorrecta.'; err.style.display='block'; return; }
+  if (nw.length < 6)      { err.textContent='La nueva contraseña debe tener al menos 6 caracteres.'; err.style.display='block'; return; }
+  if (nw !== cf)          { err.textContent='Las contraseñas no coinciden.'; err.style.display='block'; return; }
+  DV.setPwd(nw);
+  closePwdModal();
+  toast('Contraseña actualizada ✓');
+}
+
+// ── RESET ──
+function confirmReset() {
+  if (confirm('¿Restaurar todos los productos al contenido original? Se borrarán los cambios.')) {
+    DV.resetDefaults();
+    renderTable();
+    updateStats();
+    toast('Contenido restaurado.');
+  }
+}
+
+// ── TOAST ──
+function toast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(function(){ el.classList.remove('show'); }, 2800);
+}
+</script>
+</body>
+</html>

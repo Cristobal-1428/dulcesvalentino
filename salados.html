@@ -39,9 +39,7 @@
 <main>
   <section>
     <div class="wrap">
-      <div class="prod-grid">
-
-      </div>
+      <div class="prod-grid" id="prod-grid"></div>
     </div>
   </section>
 
@@ -82,9 +80,9 @@
       <div class="footer-col">
         <h5>Contacto</h5>
         <ul>
-          <li><a href="tel:+56912345678">+56 9 1234 5678</a></li>
+          <li><a href="tel:+56928064087">+56 9 2806 4087</a></li>
           <li><a href="mailto:hola@dulcesvalentino.cl">hola@dulcesvalentino.cl</a></li>
-          <li>Providencia, Santiago</li>
+          <li>Recoleta, Santiago</li>
           <li>Mar – Dom · 10:00–20:00</li>
         </ul>
       </div>
@@ -92,16 +90,13 @@
     <div class="footer-bottom">
       <span>© 2026 Dulces Valentino · Hecho con harina, mantequilla y cariño.</span>
       <span>Santiago, Chile</span>
+      <a href="admin.html" style="color:rgba(255,255,255,0.25);font-size:0.75rem;margin-left:auto;">Admin</a>
     </div>
   </div>
 </footer>
 
 <script src="nav.js"></script>
-<script>
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-</script>
+<script src="products.js"></script>
+<script>DV.renderGrid('prod-grid','salados');</script>
 </body>
 </html>

@@ -2,14 +2,14 @@
 
 :root {
   --white:    #FFFFFF;
-  --off:      #FAF7F5;
-  --nude:     #F2ECE8;
-  --blush:    #EAD5CF;
-  --rose:     #C47A8A;
-  --rose-d:   #A85E70;
-  --mauve:    #7A3F50;
-  --charcoal: #2A2020;
-  --mid:      #6B5050;
+  --off:      #F5F9FC;
+  --nude:     #E4EEF5;
+  --blush:    #BDD9EE;
+  --rose:     #5BA3CC;
+  --rose-d:   #3B83AB;
+  --mauve:    #1A5F8A;
+  --charcoal: #102030;
+  --mid:      #3A6080;
   --gold:     #B89165;
   --gold-l:   #D4B896;
 }
@@ -177,16 +177,16 @@ section { padding: clamp(3rem, 7vw, 5rem) 0; }
 }
 
 /* colores por categoría */
-.c-torta  { background: linear-gradient(135deg, #C47A8A 0%, #7A3F50 100%); }
-.c-pastel { background: linear-gradient(135deg, #D4B896 0%, #A87855 100%); }
-.c-dulce  { background: linear-gradient(135deg, #EAD5CF 0%, #C47A8A 100%); }
-.c-salado { background: linear-gradient(135deg, #A8B89A 0%, #5A7050 100%); }
+.c-torta  { background: linear-gradient(135deg, #5BA3CC 0%, #1A5F8A 100%); }
+.c-pastel { background: linear-gradient(135deg, #7BBDDE 0%, #3B83AB 100%); }
+.c-dulce  { background: linear-gradient(135deg, #BDD9EE 0%, #5BA3CC 100%); }
+.c-salado { background: linear-gradient(135deg, #A8C8DC 0%, #2A7090 100%); }
 
 /* bg categoría hero */
-.bg-torta  { background: linear-gradient(135deg, var(--off) 0%, #F5E0E5 100%); }
-.bg-pastel { background: linear-gradient(135deg, var(--off) 0%, #F5EAD8 100%); }
-.bg-dulce  { background: linear-gradient(135deg, var(--off) 0%, #F5E0E5 100%); }
-.bg-salado { background: linear-gradient(135deg, var(--off) 0%, #E5EFE0 100%); }
+.bg-torta  { background: linear-gradient(135deg, var(--off) 0%, #D0E8F5 100%); }
+.bg-pastel { background: linear-gradient(135deg, var(--off) 0%, #D5EAF5 100%); }
+.bg-dulce  { background: linear-gradient(135deg, var(--off) 0%, #C8E2F2 100%); }
+.bg-salado { background: linear-gradient(135deg, var(--off) 0%, #C5DCE8 100%); }
 
 /* ── CTA BANNER ── */
 .cta-banner {
@@ -225,6 +225,13 @@ footer { background: var(--charcoal); color: rgba(255,255,255,0.7); }
 /* ── REVEAL ── */
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
 .reveal.in { opacity: 1; transform: none; }
+
+/* ── PRICE TABLE ── */
+.price-table { width:100%; border-collapse:collapse; margin-top:1rem; }
+.price-table tr { border-top:1px solid var(--nude); }
+.price-table td { padding:0.45rem 0; font-size:0.9rem; color:var(--mid); }
+.price-table td:last-child { text-align:right; font-family:'Cormorant Garamond',serif; font-size:1.15rem; font-weight:600; color:var(--mauve); }
+.empty-msg { color:var(--mid); padding:3rem 0; text-align:center; font-size:1.05rem; grid-column:1/-1; }
 
 /* ── RESPONSIVE ── */
 

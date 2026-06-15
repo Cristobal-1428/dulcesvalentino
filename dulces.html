@@ -39,75 +39,7 @@
 <main>
   <section>
     <div class="wrap">
-      <div class="prod-grid">
-
-        <article class="prod-card reveal">
-          <div class="prod-img" style="padding:0;">
-            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiP_xEZCAAhlj56AYX_DCLSWxwuLfyEkrICOFIPRTPQEgS3PyS86KkxgISCyLfiIbcK1ZhzTq3Etgl2Ybj5b-CaQaU2SOemaUBcu5NK9Y-piJrgY5zckG22k-XplljmHx0UK5cLAZpEISg/s1600/tan+dulce+recetas-6.jpg" alt="Merenguitos con Almendras y Chocolate" loading="lazy" />
-          </div>
-          <div class="prod-body">
-            <h3>Merenguitos con Almendras y Chocolate</h3>
-            <p>Merengues crujientes cubiertos de almendras tostadas y chocolate. Bocados irresistibles.</p>
-            <div class="prod-footer"><strong>$150</strong><small>c/u</small></div>
-          </div>
-        </article>
-
-        <article class="prod-card reveal">
-          <div class="prod-img" style="padding:0;">
-            <img src="https://tpriesco.cl/cdn/shop/files/merenguitosconazucar.jpg?v=1758828245" alt="Merenguitos" loading="lazy" />
-          </div>
-          <div class="prod-body">
-            <h3>Merenguitos</h3>
-            <p>Clásicos merenguitos crujientes por fuera y suaves por dentro. Perfectos para acompañar el té.</p>
-            <div class="prod-footer"><strong>$100</strong><small>c/u</small></div>
-          </div>
-        </article>
-
-        <article class="prod-card reveal">
-          <div class="prod-img" style="padding:0;">
-            <img src="https://gourmet.iprospect.cl/wp-content/uploads/2025/08/Chilenito.jpg" alt="Alfajor de Merengue" loading="lazy" />
-          </div>
-          <div class="prod-body">
-            <h3>Alfajor de Merengue</h3>
-            <p>Dos tapas de merengue con manjar artesanal en el centro. Un clásico chileno imperdible.</p>
-            <div class="prod-footer"><strong>$150</strong><small>c/u</small></div>
-          </div>
-        </article>
-
-        <article class="prod-card reveal">
-          <div class="prod-img" style="padding:0;">
-            <img src="https://tofuu.getjusto.com/orioneat-local/resized2/bJGRMYfGoBv5eLxjx-300-x.webp" alt="Profiteroles Mini Manjar o Pastelera" loading="lazy" />
-          </div>
-          <div class="prod-body">
-            <h3>Profiteroles Mini</h3>
-            <p>Masa choux esponjosa rellena de manjar o crema pastelera. Pequeños y adictivos.</p>
-            <div class="prod-footer"><strong>$400</strong><small>c/u</small></div>
-          </div>
-        </article>
-
-        <article class="prod-card reveal">
-          <div class="prod-img" style="padding:0;">
-            <img src="https://cdnx.jumpseller.com/andres-perrier-eventos/image/49570206/IMG_20240608_095240.jpg?1717904639" alt="Profiteroles Mini Manjar Crema" loading="lazy" />
-          </div>
-          <div class="prod-body">
-            <h3>Profiteroles Mini Manjar &amp; Crema</h3>
-            <p>Masa choux rellena de manjar y crema. Doble relleno para los más golosos.</p>
-            <div class="prod-footer"><strong>$500</strong><small>c/u</small></div>
-          </div>
-        </article>
-
-        <article class="prod-card reveal">
-          <div class="prod-img" style="padding:0;">
-            <img src="https://www.homecookingadventure.com/wp-content/uploads/2022/01/chocolate_cream_puffs_main.jpg" alt="Profiteroles Crema Manjar Chocolate" loading="lazy" />
-          </div>
-          <div class="prod-body">
-            <h3>Profiteroles Crema, Manjar &amp; Chocolate</h3>
-            <p>Masa choux rellena de crema y manjar, bañada en cobertura de chocolate. La versión premium.</p>
-            <div class="prod-footer"><strong>$1.000</strong><small>c/u</small></div>
-          </div>
-        </article>
-
-      </div>
+      <div class="prod-grid" id="prod-grid"></div>
     </div>
   </section>
 
@@ -148,9 +80,9 @@
       <div class="footer-col">
         <h5>Contacto</h5>
         <ul>
-          <li><a href="tel:+56912345678">+56 9 1234 5678</a></li>
+          <li><a href="tel:+56928064087">+56 9 2806 4087</a></li>
           <li><a href="mailto:hola@dulcesvalentino.cl">hola@dulcesvalentino.cl</a></li>
-          <li>Providencia, Santiago</li>
+          <li>Recoleta, Santiago</li>
           <li>Mar – Dom · 10:00–20:00</li>
         </ul>
       </div>
@@ -158,16 +90,13 @@
     <div class="footer-bottom">
       <span>© 2026 Dulces Valentino · Hecho con harina, mantequilla y cariño.</span>
       <span>Santiago, Chile</span>
+      <a href="admin.html" style="color:rgba(255,255,255,0.25);font-size:0.75rem;margin-left:auto;">Admin</a>
     </div>
   </div>
 </footer>
 
 <script src="nav.js"></script>
-<script>
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-</script>
+<script src="products.js"></script>
+<script>DV.renderGrid('prod-grid','dulces');</script>
 </body>
 </html>
